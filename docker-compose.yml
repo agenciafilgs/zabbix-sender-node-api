@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  zabbix-server-api:
+    build: .
+    command: npm start
+    ports:
+      - "80:80"
+    volumes:
+      - .:/usr/app
+    environment:
+      API_URL: '104.44.133.54'
+      API_PORT: 10051

@@ -1,0 +1,18 @@
+{
+    "customerZabbix": {
+        "data": [
+            {
+                "host": "servidor-Exemplo",
+                "item": "itemKey001",
+                "value": "10"
+            }
+        ]
+    },
+    "customerZabbixItem": {
+        "result": [
+            {
+                "status": "sucess"
+            }
+        ]
+    }
+}

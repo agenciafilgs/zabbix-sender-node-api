@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <title>Sender API for Zabbix</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">Sender API for Zabbix</span>
+    </nav>
+    <div class="container">
+
+        <div class="pt-4">
+            <p>What is the Sender API for Zabbix
+                It is a component designed to facilitate the use of the resource "sender" of Zabbix monitoring tool.</p>
+            <!--  -->
+            <p class="alert alert-info">
+                “The sender is about a lib. which can be integrated directly into the code to send metrics to Zabbix ”
+            </p>
+            <!--  -->
+            <p>
+                Often it is necessary to carry out various approvals and tests to add new resources to the application,
+                which can make integration with third-party resources unfeasible or in some cases when technical skills
+                are needed.
+                <br>
+                With the Sender API for Zabbix it is only necessary to point to the endpoint (API), made available by
+                passing some information to the host / item
+                <br>
+                And the metric value will be sent to Zabbix without the need for lib. or packages in your application
+                code, it can be called from anywhere with http support.
+            </p>
+            <!--  -->
+            <br>
+            <h5>How to use</h5>
+            <p>It is necessary to have a host and zabbix trapper type item to be passed in the body when making the
+                post, the description is described below:</p>
+            <!--  -->
+            <br>
+            <p>
+                <span>Create a host in Zabbix</span>
+                <br>
+                - In configurations / Hosts / Create host
+                <br>
+                <img src="/img/001.png" alt="001.png" class="img-fluid">
+                <br>
+                Define a name and add it to a group (other options as needed).
+                <br>
+                - In the example I'm putting the Sender name, at the end click add.
+                <br>
+                <img src="/img/002.png" alt="002.png" class="img-fluid">
+                <br>
+                Now create a template with the desired name.
+                <br>
+                - In Templates / Create Template
+                <br>
+                <img src="/img/003.png" alt="003.png" class="img-fluid">
+                <br>
+                Access the template again and create the item according to the images below.
+                <br>
+                <img src="/img/004.png" alt="004.png" class="img-fluid">
+                <br>
+                Create Item
+                <img src="/img/005.png" alt="005.png" class="img-fluid">
+                <br>
+                <img src="/img/006.png" alt="006.png" class="img-fluid">
+                <br>
+                In the example above included the name for the item, kind of like Zabbix Trapper (which allows you to
+                receive data from the API) and the key (this is the identifier for the metric).
+                <br>
+                Type of information can be defined according to your needs, the Sender API can send Strings or numeric
+                values to Zabbix, but it will be interpreted according to the type defined, emphasizing that there are
+                ways to change the data type and or structure using Preprocessing (no discussed in this document).
+                <br>
+                Now add the template to the host created in the first step.
+                <br>
+                <img src="/img/007.png" alt="007.png" class="img-fluid">
+                <br>
+                <br>
+                <strong>
+                    Update and now we will use the Sender API microservice, in this example it will be configured in
+                    Docker.
+                </strong>
+                <br>
+                Download the image in Docker Hub:
+                <br>
+                - docker push rafasera/sender-api-zbx:tagname
+                <br>
+                <img src="/img/011.png" alt="011.png" class="img-fluid">
+                <br>
+                Start it as shown in the image and description below
+                <br>
+                <img src="/img/008.png" alt="008.png" class="img-fluid">
+                <br>
+                Door 80 was exposed here
+                <br>
+                In API_URL enter the Zabbix address.
+                <br>
+                In API_PORT inform the port of your Zabbix, default is 10051
+                <br>
+                <br>
+                After that, wait for initialization.
+                <br>
+                <!--  -->
+            <div class="alert alert-info">
+                "OBS you can find the same tutorial accessing the container in the default path that you defined in
+                my case would be localhost"
+            </div>
+            <!-- <br> -->
+            Finally we will use the Sender-API
+            <br>
+            <div class="alert alert-info">
+                "I will use the Postman Program to make requests"
+            </div>
+            <br>
+            Open Postman and access the route:
+            <br>
+            - http://localhost/api/v1/zabbix-sender
+            <br>
+            Type
+            <br>
+            - POST
+            <br>
+            Body:
+            <br><br>
+            <img src="/img/013.png" alt="013.png" class="img-fluid">
+            <br>
+            <div class="alert alert-info">
+                Obs.
+                <br>
+                - The localhost address was assigned by the docker, pointing out that I am using it locally.
+                <br>
+                - The body must contain the host created in Zabbix to receive the metric
+                <br>
+                - The Item key
+                <br>
+                - And the metric value that can be sent by another tool or application.
+            </div>
+            <br>
+            <img src="/img/009.png" alt="009.png" class="img-fluid">
+            <br>
+            <img src="/img/010.png" alt="010.png" class="img-fluid">
+            <br>
+            If there are no structural or communication problems with the Sender-API, you will receive the success
+            message.
+            <br>
+            Then the sent metric arrived at your Zabbix.
+            <br>
+
+            </p>
+
+
+        </div>
+    </div>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+    integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+    crossorigin="anonymous"></script>
+<script src="/js/bootstrap.min.js"></script>
+
+</html>
